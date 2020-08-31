@@ -2,6 +2,16 @@
 #include "unique.h"
 #include "healpix_map.h"
 
+inline void branchRTItree(
+	const std::shared_ptr<TTree> RTItree,
+	std::vector<double> &pointing,
+	double &geo_lat)
+{
+	RTItree->SetBranchAddress("glat", &pointing[1]);
+	RTItree->SetBranchAddress("glon", &pointing[0]);
+	RTItree->SetBranchAddress("geo_lat", &geo_lat);
+}
+
 void evaluateEventMap(
 	const std::shared_ptr<TF1> fitFunc,
 	const std::shared_ptr<TH1D> acceptance,
@@ -21,9 +31,10 @@ void evaluateEventMap(
 	std::vector<double> pointing(2, 0);
 	std::vector<double> old_pointing(2);
 	double geo_lat = 0;
-	RTItree->SetBranchAddress("glat", &pointing[1]);
-	RTItree->SetBranchAddress("glon", &pointing[0]);
-	RTItree->SetBranchAddress("geo_lat", &geo_lat);
+	branchRTItree(
+		RTItree,
+		pointing,
+		geo_lat);
 
 	// Start looping on tree
 	for (auto idx = 0; idx < RTItree->GetEntries(); ++idx)
@@ -32,7 +43,7 @@ void evaluateEventMap(
 			std::cout << "\n[Event Loop]: " << idx + 1;
 
 		RTItree->GetEntry(idx);
-
+		
 		// Use healpix convention for pointing
 		pointing[1] += 90;
 		pointing[1] *= TMath::DegToRad();
@@ -48,7 +59,7 @@ void evaluateEventMap(
 			old_pointing = pointing;
 			continue;
 		}
-
+		
 		datamap.buildDataMap(
 			h_event_distribution,
 			old_pointing,
@@ -70,11 +81,8 @@ void evaluateEventMap(
 		pointing_map_title, 
 		"G");
 
-	/*
-
-	write_final_maps(
-		pixel_dataMap,
-		outPath,
-		opt);
-	*/
+	// Write data maps
+	datamap.writeDataMaps(
+		opt,
+		ctime);
 }
