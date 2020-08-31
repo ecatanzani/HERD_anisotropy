@@ -172,3 +172,6 @@ deps/AnyOption/anyoption.o
 
 # ROOT out and in files
 *.root
+
+# FITS out and in files
+*.fits
