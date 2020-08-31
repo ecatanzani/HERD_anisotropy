@@ -42,7 +42,7 @@ void assets::computeAssets(
 
     // Save flux information on file
     if (verbose)
-        std::cout << "\n\nSavind assets to output ROOT file... [" << outFilePath << "]\n";
+        std::cout << "\n\nSaving assets to output ROOT file... [" << outFilePath << "]\n";
     auto fluxDir = outRootFile->mkdir("flux");
     fluxDir->cd();
     mg->Write();
@@ -104,6 +104,7 @@ void assets::extractRTItreeInfo(
     if (verbose)
         std::cout << "\nExtracting AMS telemetry tree...\n";
     RTItree = std::shared_ptr<TTree>(static_cast<TTree*>(tree_file.Get("RTI_tree")));
+    RTItree->SetDirectory(0);
     tree_file.Close();
 }
 
