@@ -27,6 +27,11 @@ HEALPIX_C_INCLUDE = /HEALPiX/Healpix_3.60/include
 HEALPIX_CPP_LIBS_PATH = /HEALPiX/Healpix_3.60/lib
 CFITSIO_LIBS_PATH = /HEALPiX/packages/cfitsio/lib
 
+HEALPIX_CNAF_CPP_INCLUDE = /home/HERD/ecatanzaniherd/Softwares/HEALPix/Healpix_3.70/include/healpix_cxx
+HEALPIX_CNAF_C_INCLUDE = /home/HERD/ecatanzaniherd/Softwares/HEALPix/Healpix_3.70/include
+HEALPIX_CNAF_CPP_LIBS_PATH = /home/HERD/ecatanzaniherd/Softwares/HEALPix/Healpix_3.70/lib
+CFITSIO_CNAF_LIBS_PATH = /home/HERD/ecatanzaniherd/Softwares/cfitsio/cfitsio3.48/lib
+
 HEALPIX_CPP_LIBS = -lhealpix_cxx -lchealpix -lhealpix -lsharp
 
 DEBUG_DIR    = Debug/obj
@@ -55,8 +60,8 @@ DEBUG_FLAGS = -g -D_DEBUG -Wall -Wno-unknown-pragmas
 LDFLAGS :=
 #add dips
 ifneq ($(DIPS_INCLUDE),)
-	CC_FLAGS += -I$(DIPS_INCLUDE) -I$(ANYOPT_INC) -I$(HEALPIX_CPP_INCLUDE) -I$(HEALPIX_C_INCLUDE)
-	LDFLAGS += $(DIPS_LIBS) -lTreePlayer -ltbb -lvdt -L$(HEALPIX_CPP_LIBS_PATH) $(HEALPIX_CPP_LIBS) -L$(CFITSIO_LIBS_PATH) -lcfitsio
+	CC_FLAGS += -I$(DIPS_INCLUDE) -I$(ANYOPT_INC) -I$(HEALPIX_CPP_INCLUDE) -I$(HEALPIX_C_INCLUDE) -I$(HEALPIX_CNAF_CPP_INCLUDE) -I$(HEALPIX_CNAF_C_INCLUDE)
+	LDFLAGS += $(DIPS_LIBS) -lTreePlayer -ltbb -lvdt -L$(HEALPIX_CPP_LIBS_PATH) -L$(HEALPIX_CNAF_CPP_LIBS_PATH) $(HEALPIX_CPP_LIBS) -L$(CFITSIO_LIBS_PATH) -L$(CFITSIO_CNAF_LIBS_PATH) -lcfitsio
 endif
 ####################################################
 # Flags by OS
